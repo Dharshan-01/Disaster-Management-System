@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live AI Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="center" style="align-items: flex-start; padding-top: 50px;">
+
+  <div class="dashboard-layout">
+    
+    <div class="form-box dash-col" style="padding: 20px;">
+      <h3 style="color: #38bdf8; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">
+        <i class="fas fa-terminal"></i> System Logs
+      </h3>
+      
+      <div id="logConsole" style="background: #0d141c; height: 350px; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 13px; color: #a3e635; overflow-y: hidden; border: 1px solid #333; line-height: 1.8;">
+        Waiting for data...
+      </div>
+    </div>
+
+    <div class="form-box dash-col" style="padding: 20px; text-align: center;">
+      <h3 class="graph-title">
+        <span>Select Parameter to Graph:</span>
+        <select id="graphParam" style="padding: 5px 10px; background: #222; color: #fff; border: 1px solid #38bdf8; border-radius: 5px;">
+          <option value="Temperature">Temperature</option>
+          <option value="Humidity">Humidity</option>
+          <option value="Wind">Wind Speed</option>
+        </select>
+      </h3>
+      
+      <img id="pythonGraph" src="" alt="Live Graph Loading..." style="width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+      
+      <button class="btn" onclick="window.location.href='/'" style="margin-top: 25px;">Back to Home</button>
+    </div>
+
+  </div>
+
+  <script>
+    function refreshDashboard() {
+      // 1. Tell Python to update the logic and get the logs
+      fetch('/update_logic')
+        .then(response => response.json())
+        .then(data => {
+          // Update the Log Console
+          const logDiv = document.getElementById('logConsole');
+          logDiv.innerHTML = data.logs.join('<br>');
+          
+          // Flash the screen red if an SOS happens!
+          if(data.disaster) {
+             document.body.style.boxShadow = "inset 0 0 150px rgba(255, 0, 0, 0.5)";
+          } else {
+             document.body.style.boxShadow = "none";
+          }
+        });
+
+      // 2. Refresh the Python Graph Image based on the dropdown
+      const param = document.getElementById('graphParam').value;
+      const graphImg = document.getElementById('pythonGraph');
+      // We add a random number to the end of the URL so the browser doesn't cache the old image
+      graphImg.src = "/get_graph/" + param + "?t=" + new Date().getTime();
+    }
+
+    // Run this every 3 seconds
+    setInterval(refreshDashboard, 3000);
+    // Run it immediately once on load
+    refreshDashboard();
+  </script>
+
+</body>
+</html>

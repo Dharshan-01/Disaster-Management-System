@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disaster Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="center">
+
+  <div class="top-auth">
+    {% if session.get('is_admin') %}
+      <span style="color: #a3e635; margin-right: 15px; font-weight: bold;">
+        <i class="fas fa-user-check"></i> Admin Mode Active
+      </span>
+      <a href="/logout" class="btn" style="padding: 8px 15px; font-size: 14px; background: rgba(251, 113, 133, 0.2); border: 1px solid #fb7185; color: #fb7185; text-decoration: none;">
+        Logout
+      </a>
+    {% else %}
+      <a href="/login" class="btn" style="padding: 8px 15px; font-size: 14px; background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #38bdf8; text-decoration: none;">
+        <i class="fas fa-user-shield"></i> Admin Login
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="home-container">
+    <div class="home-title">Disaster Management System</div>
+
+    <div class="grid">
+      <a class="card" href="{{ url_for('flood_page') }}">
+        <i class="fas fa-water"></i>
+        <div>Flood</div>
+      </a>
+
+      <a class="card" href="{{ url_for('earthquake_page') }}">
+        <i class="fas fa-house-damage"></i>
+        <div>Earthquake</div>
+      </a>
+
+      <a class="card" href="{{ url_for('cyclone_page') }}">
+        <i class="fas fa-wind"></i>
+        <div>Cyclone</div>
+      </a>
+
+      <a class="card" href="{{ url_for('wildfire_page') }}">
+        <i class="fas fa-fire"></i>
+        <div>Wildfire</div>
+      </a>
+
+      <a class="card" href="{{ url_for('landslide_page') }}">
+        <i class="fas fa-mountain"></i>
+        <div>Landslide</div>
+      </a>
+
+      <a class="card" href="{{ url_for('all_in_one_page') }}">
+        <i class="fas fa-globe-asia"></i>
+        <div>All-in-One</div>
+      </a>
+
+      <a class="card-wide" href="/news">
+        <i class="fas fa-bullhorn" style="color: #a3e635;"></i>
+        <div>Updates and News</div>
+      </a>
+
+      {% if session.get('is_admin') %}
+        <a class="card-wide" href="/live_dashboard">
+          <i class="fas fa-chart-line"></i>
+          <div>Live System Monitor & SOS (Admin Only)</div>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    function acknowledgePost(postId) {
+      fetch(`/news/like/${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          if(data.status === 'success') {
+            const btn = document.getElementById(`btn-${postId}`);
+            const countSpan = document.getElementById(`count-${postId}`);
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Acknowledged';
+            btn.style.background = '#a3e635';
+            btn.style.color = '#0d141c';
+            btn.disabled = true;
+            countSpan.innerText = parseInt(countSpan.innerText) + 1;
+          }
+        });
+    }
+  </script>
+
+</body>
+</html>

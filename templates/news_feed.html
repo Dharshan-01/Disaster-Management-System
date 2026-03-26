@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Disaster Updates</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .news-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(10px);
+    }
+    .news-title { color: #fb7185; font-size: 22px; margin-bottom: 5px; font-weight: bold; }
+    .news-time { color: #a3e635; font-size: 13px; margin-bottom: 15px; }
+    .news-content { color: #cbd5f5; line-height: 1.6; margin-bottom: 15px; white-space: pre-wrap; font-size: 15px; }
+    .news-image { width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+    
+    /* Acknowledge Button Styling */
+    .ack-btn {
+      background: rgba(163, 230, 53, 0.1);
+      border: 1px solid #a3e635;
+      color: #a3e635;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    .ack-btn:hover { background: rgba(163, 230, 53, 0.3); }
+    .ack-btn.acknowledged {
+      background: #a3e635;
+      color: #0d141c;
+      cursor: default;
+      border-color: #a3e635;
+    }
+  </style>
+</head>
+<body class="page-news">
+
+  <div class="news-wrap">
+    
+    <div class="news-header">
+      <h2 style="color: white; margin: 0;"><i class="fas fa-satellite-dish" style="color: #38bdf8;"></i> Official Live Updates</h2>
+      <a href="/" style="color: #cbd5f5; text-decoration: none; font-size: 14px;">⬅ Back to Home</a>
+    </div>
+
+    {% if session.get('is_admin') %}
+      <div class="news-card" style="border: 1px dashed #38bdf8; background: rgba(0,0,0,0.4);">
+        <h3 style="color: #38bdf8; margin-bottom: 15px; margin-top: 0;"><i class="fas fa-edit"></i> Post a New Update</h3>
+        <form action="/admin/create_post" method="POST" enctype="multipart/form-data">
+          <input type="text" name="title" required placeholder="Alert Title (e.g., Road Closed)" style="width: 100%; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px;">
+          <textarea name="content" required rows="3" placeholder="Provide instructions..." style="width: 100%; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px; resize: vertical;"></textarea>
+          <div class="news-admin-row">
+            <input type="file" name="image" accept="image/*" style="color: #cbd5f5; font-size: 13px;">
+            <button type="submit" class="btn" style="padding: 8px 20px; font-size: 14px;">Publish Update</button>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+
+    {% if posts %}
+      {% for post in posts %}
+        <div class="news-card">
+          <div class="news-title">{{ post.title }}</div>
+          <div class="news-time"><i class="far fa-clock"></i> Posted: {{ post.time }}</div>
+          
+          {% if post.image %}
+            <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="news-image" alt="Disaster Update Image">
+          {% endif %}
+          
+          <div class="news-content">{{ post.content }}</div>
+          
+          <div class="news-ack-row">
+            <span style="color: #cbd5f5; font-size: 13px;">
+              <span id="count-{{ post.id }}" style="color: white; font-weight: bold;">{{ post.likes }}</span> Citizens Acknowledged
+            </span>
+            <button type="button" id="btn-{{ post.id }}" class="ack-btn" data-post-id="{{ post.id }}" onclick="acknowledgePost(this.dataset.postId)">
+              <i class="fas fa-check-double"></i> Acknowledge
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="news-card" style="text-align: center; color: #cbd5f5;">
+        <i class="fas fa-shield-alt" style="font-size: 40px; margin-bottom: 15px; color: #a3e635;"></i>
+        <p>No active emergencies or updates at this time. Stay safe!</p>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <script>
+    function acknowledgePost(postId) {
+      // Send the "Like" silently to the Python backend
+      fetch(`/news/like/${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          if(data.status === 'success') {
+            // Update the UI button to Green
+            const btn = document.getElementById(`btn-${postId}`);
+            const countSpan = document.getElementById(`count-${postId}`);
+            
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Acknowledged';
+            btn.classList.add('acknowledged');
+            btn.disabled = true; // Prevent clicking twice
+            
+            // Increase the number on screen
+            countSpan.innerText = parseInt(countSpan.innerText) + 1;
+          }
+        });
+    }
+  </script>
+</body>
+</html>

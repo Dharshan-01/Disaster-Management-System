@@ -1,0 +1,375 @@
+/* ================= styles.css ================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  min-height: 100vh;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+/* ================= HOME ================= */
+.home-container {
+  text-align: center;
+  width: min(100%, 960px);
+}
+
+.home-title {
+  font-size: 34px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  gap: 25px;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  display: block;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  padding: 30px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Wide Card for Dashboard (Matched Styling) */
+.card-wide {
+  background: rgba(255,255,255,0.08); /* Changed to match standard cards */
+  backdrop-filter: blur(10px);
+  padding: 30px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3); /* Matched shadow */
+  grid-column: 1 / -1; /* Keeps it wide */
+  text-decoration: none; /* Removes underline if it's a link */
+  color: #fff;
+}
+
+.card-wide i {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.card-wide:hover {
+  transform: translateY(-8px) scale(1.01); /* Matched hover effect */
+  background: rgba(255,255,255,0.15); /* Matched hover color */
+}
+
+.card i {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  background: rgba(255,255,255,0.15);
+}
+
+/* ================= FORM ================= */
+.form-box {
+  width: min(100%, 400px);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #cbd5f5;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  outline: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  outline: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+.form-group input::placeholder {
+  color: #cbd5f5;
+}
+
+.form-group input:focus {
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+.btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, #38bdf8, #6366f1);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+.back {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #cbd5f5;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: white;
+}
+
+/* ================= DYNAMIC THEMING (Idea 4) ================= */
+.danger-glow {
+  box-shadow: 0 0 35px rgba(251, 113, 133, 0.6), inset 0 0 15px rgba(251, 113, 133, 0.2) !important;
+  border: 1px solid rgba(251, 113, 133, 0.8) !important;
+  animation: pulse-red 2s infinite;
+}
+
+.safe-glow {
+  box-shadow: 0 0 35px rgba(163, 230, 53, 0.4), inset 0 0 15px rgba(163, 230, 53, 0.1) !important;
+  border: 1px solid rgba(163, 230, 53, 0.6) !important;
+}
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 35px rgba(251, 113, 133, 0.6), inset 0 0 15px rgba(251, 113, 133, 0.2); }
+  50% { box-shadow: 0 0 55px rgba(251, 113, 133, 0.9), inset 0 0 25px rgba(251, 113, 133, 0.4); }
+  100% { box-shadow: 0 0 35px rgba(251, 113, 133, 0.6), inset 0 0 15px rgba(251, 113, 133, 0.2); }
+}
+
+/* ================= AI ANALYSIS BOX (Idea 3) ================= */
+.reason-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 4px solid #fb7185; /* Red border by default */
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 4px 8px 8px 4px;
+  text-align: left;
+}
+
+.reason-box.safe {
+  border-left: 4px solid #a3e635; /* Green border for safe */
+}
+
+.reason-box h4 {
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.reason-box ul {
+  margin-left: 20px;
+  color: #cbd5f5;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.top-auth {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  z-index: 100;
+}
+
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.dash-col {
+  width: 48%;
+}
+
+.results-box {
+  width: min(100%, 500px);
+}
+
+.news-wrap {
+  max-width: 700px;
+  width: 100%;
+}
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 12px;
+}
+
+.news-admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.news-ack-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 15px;
+}
+
+.graph-title {
+  color: #cbd5f5;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-news {
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========================================== */
+/* RESPONSIVE DESIGN (MOBILE & LAPTOP)        */
+/* ========================================== */
+
+/* 1. Default Laptop/Desktop Layout */
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.dash-col {
+  width: 48%;
+}
+
+/* Ensure the grid looks good on laptop */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.card-wide {
+  grid-column: 1 / -1;
+}
+
+/* 2. Mobile Phone Layout (Triggered if screen is smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dash-col {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-box,
+  .news-card,
+  .news-wrap {
+    width: 90% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .news-admin-row,
+  .news-ack-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .news-admin-row button,
+  .news-ack-row button {
+    width: 100%;
+  }
+
+  .top-auth {
+    top: 10px !important;
+    right: 15px !important;
+  }
+}
+
+

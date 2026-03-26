@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="center">
+
+<div class="form-box">
+  <div class="form-title">🌍 Live Global Predictor</div>
+
+  <form action="/predict_all" method="POST">
+    <div class="form-group">
+      <label>Enter City Name</label>
+      <input type="text" name="city" required placeholder="e.g. Chennai, Tokyo, New York">
+    </div>
+
+    <button type="submit" class="btn">Run All Models</button>
+  </form>
+
+  <div style="text-align: center; margin-top: 20px; cursor: pointer; color: #cbd5f5; font-size: 14px;" onclick="window.location.href='/'">
+    ⬅ Back to Home
+  </div>
+</div>
+
+</body>
+</html>

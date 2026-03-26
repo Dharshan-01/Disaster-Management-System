@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="center">
+  <div class="form-box results-box">
+    <div class="form-title">Live Risk Dashboard: {{ city }}</div>
+    <p style="text-align: center; color: #cbd5f5; font-size: 14px; margin-bottom: 20px;">
+      Lat: {{ lat }} | Lon: {{ lon }}<br>
+      Temp: {{ temp }}°C | Rain: {{ rain }}mm | Wind: {{ wind }}km/h
+    </p>
+
+    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <h4 style="color: #ffaa00;">🔥 Wildfire Risk:</h4>
+      <p>{{ fire_res }}</p>
+    </div>
+    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <h4 style="color: #38bdf8;">🌊 Flood Risk:</h4>
+      <p>{{ flood_res }}</p>
+    </div>
+    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <h4 style="color: #a3e635;">🌪 Cyclone Risk:</h4>
+      <p>{{ cyclone_res }}</p>
+    </div>
+    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <h4 style="color: #fb7185;">🌍 Earthquake Risk:</h4>
+      <p>{{ earthquake_res }}</p>
+    </div>
+    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+      <h4 style="color: #d97706;">⛰ Landslide Risk:</h4>
+      <p>{{ landslide_res }}</p>
+    </div>
+
+    <button class="btn" onclick="window.location.href='/'">Back to Home</button>
+  </div>
+</body>
+</html>

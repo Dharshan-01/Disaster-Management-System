@@ -19,7 +19,7 @@ class SensorReading(Base):
     id = Column(Integer, primary_key=True, index=True)
     disaster_type = Column(String, index=True)
     location = Column(String)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.utcnow())
     raw_data = Column(Text)
     risk_score = Column(Float, nullable=True)
     model_version = Column(String, default="1.0.0")
@@ -32,7 +32,7 @@ class Alert(Base):
     disaster_type = Column(String)
     location = Column(String)
     message = Column(Text)
-    sent_at = Column(DateTime, default=datetime.utcnow)
+    sent_at = Column(DateTime, default=lambda: datetime.utcnow())
     recipients = Column(Text)
     status = Column(String, default="pending")
 
@@ -44,7 +44,7 @@ class NewsItem(Base):
     title = Column(String)
     summary = Column(Text)
     source = Column(String)
-    published_at = Column(DateTime, default=datetime.utcnow)
+    published_at = Column(DateTime, default=lambda: datetime.utcnow())
     link = Column(String)
     disaster_tags = Column(Text)
 

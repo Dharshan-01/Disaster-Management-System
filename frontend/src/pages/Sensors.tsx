@@ -25,19 +25,16 @@ export default function Sensors() {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Load initial sensors from REST
+  // Load initial sensors from REST (runs once; selected is set via setSelected, not read here)
   useEffect(() => {
     api.getSensors()
       .then(data => {
         if (Array.isArray(data)) {
           setSensors(data as SensorReading[]);
-          if (data.length > 0 && !selected) {
-            setSelected((data[0] as SensorReading).location);
-          }
+          setSelected(prev => prev ?? ((data[0] as SensorReading | undefined)?.location ?? null));
         }
       })
       .catch(() => {/* non-critical, WS will populate */});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const connectWs = useCallback(() => {
@@ -183,8 +180,8 @@ export default function Sensors() {
                 <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="time" tick={{ fill: '#9ca3af', fontSize: 11 }} />
-                    <YAxis tick={{ fill: '#9ca3af', fontSize: 11 }} />
+                    <XAxis dataKey="time" tick={{ fill: '#9ca3af', fontSize: 12 }} />
+                    <YAxis tick={{ fill: '#9ca3af', fontSize: 12 }} />
                     <Tooltip
                       contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: 8, color: '#f9fafb' }}
                     />

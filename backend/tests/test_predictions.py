@@ -1,5 +1,4 @@
 import pytest
-import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.models.wildfire import predict as wildfire_predict

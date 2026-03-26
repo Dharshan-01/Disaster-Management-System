@@ -157,10 +157,9 @@ class ConnectionManager:
             self.active_connections.remove(websocket)
 
     async def broadcast(self, message: dict):
-        import json as _json
         for connection in list(self.active_connections):
             try:
-                await connection.send_text(_json.dumps(message))
+                await connection.send_text(json.dumps(message))
             except Exception:
                 self.disconnect(connection)
 

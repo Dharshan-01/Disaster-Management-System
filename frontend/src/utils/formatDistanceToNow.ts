@@ -1,6 +1,8 @@
-export function formatDistanceToNow(iso: string): string {
+export function formatDistanceToNow(iso: string | undefined): string {
+  if (!iso) return 'just now';
   try {
     const diff = Date.now() - new Date(iso).getTime();
+    if (isNaN(diff)) return 'just now';
     const seconds = Math.floor(diff / 1000);
     if (seconds < 60) return `${seconds}s ago`;
     const minutes = Math.floor(seconds / 60);
@@ -9,6 +11,6 @@ export function formatDistanceToNow(iso: string): string {
     if (hours < 24) return `${hours}h ago`;
     return `${Math.floor(hours / 24)}d ago`;
   } catch {
-    return 'recently';
+    return 'just now';
   }
 }

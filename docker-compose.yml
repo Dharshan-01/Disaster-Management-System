@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: disaster-mgmt-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./frontend/dist:/app/frontend/dist:ro
+    environment:
+      - DATABASE_URL=sqlite:///./disaster_management.db
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID:-}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN:-}
+      - TWILIO_WHATSAPP_FROM=${TWILIO_WHATSAPP_FROM:-whatsapp:+14155238886}
+      - ALERT_RECIPIENTS=${ALERT_RECIPIENTS:-}
+      - NEWS_RSS_FEEDS=${NEWS_RSS_FEEDS:-}
+      - RISK_THRESHOLD=${RISK_THRESHOLD:-0.6}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: disaster-mgmt-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

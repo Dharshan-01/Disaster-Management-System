@@ -41,15 +41,22 @@ export default function Sensors() {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) return;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/sensors`);
+    const ws = new WebSocket(`${protocol}//${window.location.host}/api/ws/sensors`);
     wsRef.current = ws;
 
     ws.onopen = () => setWsConnected(true);
 
     ws.onmessage = (evt: MessageEvent) => {
       try {
-        const data = JSON.parse(evt.data as string) as SensorReading | SensorReading[];
-        const incoming: SensorReading[] = Array.isArray(data) ? data : [data];
+        const raw = JSON.parse(evt.data as string) as { sensors?: Record<string, SensorReading> } | SensorReading | SensorReading[];
+        let incoming: SensorReading[];
+        if (Array.isArray(raw)) {
+          incoming = raw;
+        } else if (raw && typeof raw === 'object' && 'sensors' in raw && raw.sensors) {
+          incoming = Object.values(raw.sensors) as SensorReading[];
+        } else {
+          incoming = [raw as SensorReading];
+        }
 
         setSensors(prev => {
           const map = new Map(prev.map(s => [s.location, s]));

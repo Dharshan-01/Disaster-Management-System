@@ -8,6 +8,8 @@ __pycache__/
 
 # Virtual environments
 .env
+!.env.example
+!backend/.env.example
 venv/
 env/
 .venv/
@@ -15,6 +17,15 @@ env/
 # Database
 *.db
 *.sqlite3
+
+# Trained ML models (auto-generated on first run)
+backend/trained_models/*.pkl
+backend/trained_models/*.joblib
+
+# Frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
 
 # IDE
 .idea/
@@ -24,3 +35,13 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+nohup.out
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
